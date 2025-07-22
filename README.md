@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+📄 README.md
+
+>>>>>>> 03364d5fe46d397de94fc7bf645f0ba213ced6f7
 # ✅ Sistema de Controle de Tarefas com Autenticação
 
 Este é um projeto simples de uma API para gerenciamento de tarefas com autenticação de usuários, construído com Node.js, Express e MongoDB.
@@ -40,4 +45,8 @@ todo-auth/
 │
 ├── routes/ # Rotas de autenticação e tarefas
 │ ├── authRoutes.js
+<<<<<<< HEAD
 │ └── taskRoutes.js
+=======
+│ └── taskRoutes.js
+>>>>>>> 03364d5fe46d397de94fc7bf645f0ba213ced6f7
