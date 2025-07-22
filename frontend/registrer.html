@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Cadastro</h2>
+  <form id="registerForm">
+    <input type="text" id="name" placeholder="Nome" required>
+    <input type="email" id="email" placeholder="E-mail" required>
+    <input type="password" id="password" placeholder="Senha" required>
+    <button type="submit">Cadastrar</button>
+  </form>
+  <p>Já tem uma conta? <a href="login.html">Entrar</a></p>
+
+  <script>
+    document.getElementById('registerForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const res = await fetch('http://localhost:5000/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ name, email, password })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          alert('Cadastro realizado com sucesso!');
+          window.location.href = 'login.html';
+        } else {
+          alert(data.message || 'Erro ao cadastrar');
+        }
+      } catch (err) {
+        alert('Erro ao conectar com o servidor');
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>

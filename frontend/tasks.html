@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Minhas Tarefas</title>
+</head>
+<body>
+  <h2>Tarefas</h2>
+  <form id="taskForm">
+    <input type="text" id="title" placeholder="Nova tarefa..." required>
+    <button type="submit">Adicionar</button>
+  </form>
+  <ul id="taskList"></ul>
+  <button onclick="logout()">Sair</button>
+
+  <script>
+    const token = localStorage.getItem('token');
+    const api = 'http://localhost:5000/api/tasks';
+
+
+    if (!token) window.location.href = 'login.html';
+
+    async function loadTasks() {
+      const res = await fetch(api, {
+        headers: { Authorization: 'Bearer ' + token }
+      });
+      const tasks = await res.json();
+      const list = document.getElementById('taskList');
+      list.innerHTML = '';
+      tasks.forEach(task => {
+        const li = document.createElement('li');
+        li.textContent = task.title + (task.completed ? ' ✅' : '');
+        li.onclick = () => deleteTask(task._id);
+        list.appendChild(li);
+      });
+    }
+
+    async function deleteTask(id) {
+      await fetch(`${api}/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: 'Bearer ' + token }
+      });
+      loadTasks();
+    }
+
+    const form = document.getElementById('taskForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await fetch(api, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token
+        },
+        body: JSON.stringify({ title: form.title.value })
+      });
+      form.reset();
+      loadTasks();
+    });
+
+    function logout() {
+      localStorage.removeItem('token');
+      window.location.href = 'login.html';
+    }
+
+    loadTasks();
+  </script>
+</body>
+</html>
