@@ -2,19 +2,17 @@ const express = require('express');
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/authRoutes');
 const taskRoutes = require('./routes/taskRoutes');
-
-app.use('/api/tasks', taskRoutes);
-const api = 'https://todo-auth-api.onrender.com/api/tasks';
-
-
-app.use('/api/auth', authRoutes);
-
 const cors = require('cors');
 require('dotenv').config();
 
-const app = express();
+const app = express(); // <-- MOVIDO PARA CIMA
+
 app.use(cors());
 app.use(express.json());
+
+// Rotas
+app.use('/api/tasks', taskRoutes);
+app.use('/api/auth', authRoutes);
 
 // Conexão com MongoDB
 mongoose.connect(process.env.MONGODB_URI)
